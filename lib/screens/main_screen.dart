@@ -1,258 +1,338 @@
 import 'package:calculator_app/Constants/appcolors.dart';
+import 'package:calculator_app/Provider/calculate_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Calculator extends StatelessWidget {
   const Calculator({super.key});
+  @override
+  Widget build(BuildContext context) {
+    // final calculator = Provider.of<CalculateProvider>(context);
+    return Scaffold(
+        // backgroundColor: Colors.white,
+        appBar: AppBar(
+            // title: const Text("appbar"),
+            ),
+        body: Padding(
+          padding: const EdgeInsets.all(18.0),
+          child: Consumer<CalculateProvider>(
+              builder: (context, calculator, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  // textDirection: TextDirection.rtl,
+                  children: [
+                    Text(
+                      calculator.input.isEmpty ? "0" : calculator.input,
+                      style: TextStyle(
+                          fontSize: calculator.equalPressed
+                              ? 25
+                              : calculator.getLength
+                                  ? 27
+                                  : 35,
+                          color: Appcolors.acColor,
+                          fontWeight: calculator.equalPressed
+                              ? FontWeight.normal
+                              : FontWeight.bold),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      calculator.output,
+                      style: TextStyle(
+                          fontSize: calculator.equalPressed ? 35 : 25,
+                          color: Appcolors.acColor,
+                          fontWeight: calculator.equalPressed
+                              ? FontWeight.bold
+                              : FontWeight.normal),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    scientificButton(
+                      text: 'e',
+                    ),
+                    scientificButton(
+                      text: '𝜋',
+                    ),
+                    scientificButton(
+                      text: 'sin',
+                    ),
+                    scientificButton(
+                      text: 'cos',
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 13,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      height: 62,
+                      width: 70,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          calculator.setValue("AC");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            // fixedSize: const Size(70, 62),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)))),
+                        child: Text(
+                          "AC",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: Appcolors.acColor,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 62,
+                      width: 70,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          calculator.setValue("<");
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            // fixedSize: const Size(70, 62),
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)))),
+                        child: Icon(
+                          Icons.backspace_outlined,
+                          color: Appcolors.acColor,
+                        ),
+                      ),
+                    ),
+                    customButton(
+                        text: "/",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {
+                          // print(text);
+                        },
+                        bgColor: Appcolors.opButtonColor,
+                        height: 62,
+                        width: 70),
+                    customButton(
+                        text: "*",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {},
+                        bgColor: Appcolors.opButtonColor,
+                        height: 62,
+                        width: 70),
+                  ],
+                ),
+                const SizedBox(
+                  height: 13,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    customButton(
+                        text: "7",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {},
+                        bgColor: Appcolors.whiteColor,
+                        height: 62,
+                        width: 70),
+                    customButton(
+                        text: "8",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {},
+                        bgColor: Appcolors.whiteColor,
+                        height: 62,
+                        width: 70),
+                    customButton(
+                        text: "9",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {},
+                        bgColor: Appcolors.whiteColor,
+                        height: 62,
+                        width: 70),
+                    customButton(
+                        text: "-",
+                        fgColor: Appcolors.textColor,
+                        onPressed: () {},
+                        bgColor: Appcolors.opButtonColor,
+                        height: 62,
+                        width: 70),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              customButton(
+                                text: "4",
+                                fgColor: Appcolors.textColor,
+                                onPressed: () {},
+                                bgColor: Appcolors.whiteColor,
+                                height: 62,
+                                width: 70,
+                              ),
+                              customButton(
+                                  text: "5",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 62,
+                                  width: 70),
+                              customButton(
+                                  text: "6",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 62,
+                                  width: 70),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              customButton(
+                                text: "1",
+                                fgColor: Appcolors.textColor,
+                                onPressed: () {},
+                                bgColor: Appcolors.whiteColor,
+                                height: 62,
+                                width: 70,
+                              ),
+                              customButton(
+                                  text: "2",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 62,
+                                  width: 70),
+                              customButton(
+                                  text: "3",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 62,
+                                  width: 70),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              customButton(
+                                  text: "0",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 65,
+                                  width: 150),
+                              customButton(
+                                  text: ".",
+                                  fgColor: Appcolors.textColor,
+                                  onPressed: () {},
+                                  bgColor: Appcolors.whiteColor,
+                                  height: 65,
+                                  width: 70),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Column(
+                      children: [
+                        customButton(
+                            text: "+",
+                            fgColor: Appcolors.textColor,
+                            onPressed: () {},
+                            bgColor: Appcolors.opButtonColor,
+                            height: 110,
+                            width: 70),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        customButton(
+                            text: "=",
+                            fgColor: Appcolors.textColor,
+                            onPressed: () {},
+                            bgColor: Appcolors.opButtonColor,
+                            height: 110,
+                            width: 70),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
+        ));
+  }
+}
+
+// ignore: camel_case_types
+class scientificButton extends StatelessWidget {
+  final String text;
+  const scientificButton({
+    super.key,
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.white,
-      appBar: AppBar(
-          // title: const Text("appbar"),
-          ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Input",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Appcolors.acColor,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  "Output",
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Appcolors.acColor,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 62,
-                  width: 70,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        // fixedSize: const Size(70, 62),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10)))),
-                    child: Text(
-                      "AC",
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Appcolors.acColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 62,
-                  width: 70,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        // fixedSize: const Size(70, 62),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10)))),
-                    child: Icon(
-                      Icons.backspace_outlined,
-                      color: Appcolors.acColor,
-                    ),
-                  ),
-                ),
-                customButton(
-                    text: "/",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.opButtonColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "*",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.opButtonColor,
-                    height: 62,
-                    width: 70),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                customButton(
-                    text: "7",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.whiteColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "8",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.whiteColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "9",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.whiteColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "-",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.opButtonColor,
-                    height: 62,
-                    width: 70),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                customButton(
-                  text: "4",
-                  fgColor: Appcolors.textColor,
-                  onPressed: () {},
-                  bgColor: Appcolors.whiteColor,
-                  height: 62,
-                  width: 70,
-                ),
-                customButton(
-                    text: "5",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.whiteColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "6",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.whiteColor,
-                    height: 62,
-                    width: 70),
-                customButton(
-                    text: "+",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.opButtonColor,
-                    height: 62,
-                    width: 70),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        // crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          customButton(
-                            text: "1",
-                            fgColor: Appcolors.textColor,
-                            onPressed: () {},
-                            bgColor: Appcolors.whiteColor,
-                            height: 62,
-                            width: 70,
-                          ),
-                          customButton(
-                              text: "2",
-                              fgColor: Appcolors.textColor,
-                              onPressed: () {},
-                              bgColor: Appcolors.whiteColor,
-                              height: 62,
-                              width: 70),
-                          customButton(
-                              text: "3",
-                              fgColor: Appcolors.textColor,
-                              onPressed: () {},
-                              bgColor: Appcolors.whiteColor,
-                              height: 62,
-                              width: 70),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          customButton(
-                              text: "0",
-                              fgColor: Appcolors.textColor,
-                              onPressed: () {},
-                              bgColor: Appcolors.whiteColor,
-                              height: 65,
-                              width: 150),
-                          customButton(
-                              text: ".",
-                              fgColor: Appcolors.textColor,
-                              onPressed: () {},
-                              bgColor: Appcolors.whiteColor,
-                              height: 65,
-                              width: 70),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: 15,
-                ),
-                customButton(
-                    text: "=",
-                    fgColor: Appcolors.textColor,
-                    onPressed: () {},
-                    bgColor: Appcolors.opButtonColor,
-                    height: 120,
-                    width: 70),
-              ],
-            ),
-          ],
+    final calculator = Provider.of<CalculateProvider>(context);
+
+    return SizedBox(
+      width: 70,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: () {
+          calculator.setValue(text);
+        },
+        style: ElevatedButton.styleFrom(backgroundColor: Appcolors.whiteColor),
+        child: Text(
+          text,
+          style: TextStyle(
+              color: Appcolors.textColor,
+              fontSize: 13,
+              fontWeight: FontWeight.bold),
         ),
       ),
     );
   }
 }
 
+// ignore: camel_case_types
 class customButton extends StatelessWidget {
   final String text;
   final Color fgColor;
@@ -261,7 +341,7 @@ class customButton extends StatelessWidget {
   final double width;
 
   final void Function()? onPressed;
-  customButton(
+  const customButton(
       {super.key,
       required this.text,
       required this.fgColor,
@@ -272,17 +352,36 @@ class customButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final calculator = Provider.of<CalculateProvider>(context);
+    return SizedBox(
       height: height,
       width: width,
       child: ElevatedButton(
-        onPressed: onPressed,
+        onPressed: () {
+          print(text);
+          if (text != "=") {
+            calculator.updateText(text);
+          } else {
+            calculator.setValue(text);
+          }
+        },
         style: ElevatedButton.styleFrom(
-            backgroundColor: bgColor,
-            // fixedSize: const Size(70, 62),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)))),
+                backgroundColor: bgColor,
+                // fixedSize: const Size(70, 62),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))))
+            .copyWith(
+          backgroundColor: WidgetStateProperty.resolveWith<Color>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.pressed)) {
+                return const Color(0xffa0d7fe); // Color when pressed
+              }
+              return bgColor; // Default color
+            },
+          ),
+        ),
         child: Text(
+          // ignore: unnecessary_string_interpolations
           "$text",
           style: TextStyle(fontSize: 30, color: fgColor),
         ),
