@@ -10,6 +10,7 @@ class CalculateProvider extends ChangeNotifier {
   void updateText(String newText) {
     input += newText;
     equalPressed = false;
+
     calculateResult();
     length();
     notifyListeners(); // Notify listeners whenever the string changes
@@ -29,7 +30,10 @@ class CalculateProvider extends ChangeNotifier {
       if (newoutput.endsWith(".0")) {
         output = newoutput.substring(0, newoutput.length - 2);
       } else {
-        output = newoutput;
+        double doubleValue = double.parse(output);
+        String formattedValue = doubleValue.toStringAsFixed(5);
+
+        output = formattedValue;
       }
     } catch (e) {
       output = "";
@@ -38,6 +42,7 @@ class CalculateProvider extends ChangeNotifier {
 
   void updateOutput(String outputVal) {
     output = outputVal;
+
     notifyListeners(); // Notify listeners whenever the string changes
   }
 
@@ -47,11 +52,13 @@ class CalculateProvider extends ChangeNotifier {
         input = "";
         output = '';
         getLength = false;
+        equalPressed = false;
         notifyListeners();
         break;
 
       case "<":
         input = input.substring(0, input.length - 1);
+
         notifyListeners();
         break;
 
@@ -59,11 +66,18 @@ class CalculateProvider extends ChangeNotifier {
         computeValue();
         notifyListeners();
         break;
-      case "e":
-        updateText('e');
-        break;
+
       case "sin":
-        updateText('sin()');
+        updateText('sin');
+        break;
+      case "cos":
+        updateText('cos');
+        break;
+      case "(":
+        updateText('(');
+        break;
+      case ")":
+        updateText(')');
         break;
 
       default:
@@ -71,15 +85,22 @@ class CalculateProvider extends ChangeNotifier {
   }
 
   computeValue() {
-    output = input.interpret().toString();
-    var aa = "sin(2)";
-    print(aa.interpret());
-    if (output.endsWith(".0")) {
-      output = output.substring(0, output.length - 2);
-      equalPressed = true;
-    } else {
-      updateOutput(output);
-      equalPressed = true;
+    try {
+      output = input.interpret().toString();
+      var aa = "sin(2)";
+      print(aa.interpret());
+      if (output.endsWith(".0")) {
+        output = output.substring(0, output.length - 2);
+        equalPressed = true;
+      } else {
+        double doubleValue = double.parse(output);
+        String formattedValue = doubleValue.toStringAsFixed(5);
+
+        updateOutput(formattedValue);
+        equalPressed = true;
+      }
+    } catch (e) {
+      print(e);
     }
   }
 }

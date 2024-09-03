@@ -1,5 +1,6 @@
 import 'package:calculator_app/Constants/appcolors.dart';
 import 'package:calculator_app/Provider/calculate_provider.dart';
+import 'package:calculator_app/Provider/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,10 +8,30 @@ class Calculator extends StatelessWidget {
   const Calculator({super.key});
   @override
   Widget build(BuildContext context) {
-    // final calculator = Provider.of<CalculateProvider>(context);
+    final provider = Provider.of<ThemeProvider>(context);
     return Scaffold(
+      
         // backgroundColor: Colors.white,
         appBar: AppBar(
+        actions:[
+          IconButton(
+            onPressed: () {
+              // Get the ThemeProvider instance from the context
+              final themeProvider =
+                  Provider.of<ThemeProvider>(context, listen: false);
+
+              // Call the toggleTheme method to change the theme
+              themeProvider.toggleTheme();
+            },
+            icon: Icon(
+              // Use the isClick to determine the icon
+              provider.isClick ? Icons.light_mode : Icons.dark_mode,
+              size: 30,
+            ),
+            color: provider.isClick ? Colors.white : Colors.black,
+          )
+        ]
+
             // title: const Text("appbar"),
             ),
         body: Padding(
@@ -25,32 +46,54 @@ class Calculator extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   // textDirection: TextDirection.rtl,
                   children: [
-                    Text(
-                      calculator.input.isEmpty ? "0" : calculator.input,
+                    AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 500),
                       style: TextStyle(
-                          fontSize: calculator.equalPressed
-                              ? 25
-                              : calculator.getLength
-                                  ? 27
-                                  : 35,
-                          color: Appcolors.acColor,
-                          fontWeight: calculator.equalPressed
-                              ? FontWeight.normal
-                              : FontWeight.bold),
+                            fontSize: calculator.equalPressed
+                                ? 25
+                                : calculator.getLength
+                                    ? 27
+                                    : 35,
+                            color: Appcolors.acColor,
+                            fontWeight: calculator.equalPressed
+                                ? FontWeight.normal
+                                : FontWeight.bold),
+                      child: Text(
+                        calculator.input.isEmpty ? "0" : calculator.input,
+                        // style: TextStyle(
+                        //     fontSize: calculator.equalPressed
+                        //         ? 25
+                        //         : calculator.getLength
+                        //             ? 27
+                        //             : 35,
+                        //     color: Appcolors.acColor,
+                        //     fontWeight: calculator.equalPressed
+                        //         ? FontWeight.normal
+                        //         : FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      calculator.output,
+                    AnimatedDefaultTextStyle(
+                    duration: const Duration(milliseconds: 500),
+
                       style: TextStyle(
                           fontSize: calculator.equalPressed ? 35 : 25,
                           color: Appcolors.acColor,
                           fontWeight: calculator.equalPressed
                               ? FontWeight.bold
-                              : FontWeight.normal),
+                              : FontWeight.normal),                      child: Text(
+                        calculator.output,
+                        // style: TextStyle(
+                        //     fontSize: calculator.equalPressed ? 35 : 25,
+                        //     color: Appcolors.acColor,
+                        //     fontWeight: calculator.equalPressed
+                        //         ? FontWeight.bold
+                        //         : FontWeight.normal),
+                      ),
                     ),
                   ],
                 ),
@@ -61,16 +104,16 @@ class Calculator extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     scientificButton(
-                      text: 'e',
-                    ),
-                    scientificButton(
-                      text: '𝜋',
-                    ),
-                    scientificButton(
                       text: 'sin',
                     ),
                     scientificButton(
                       text: 'cos',
+                    ),
+                    scientificButton(
+                      text: '(',
+                    ),
+                    scientificButton(
+                      text: ')',
                     ),
                   ],
                 ),
