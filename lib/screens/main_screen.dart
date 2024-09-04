@@ -10,27 +10,50 @@ class Calculator extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<ThemeProvider>(context);
     return Scaffold(
-      
-        // backgroundColor: Colors.white,
+        backgroundColor:
+            provider.isClick ? Color(0Xff181f25) : Color(0XFFFAF9F6),
         appBar: AppBar(
-        actions:[
-          IconButton(
-            onPressed: () {
-              // Get the ThemeProvider instance from the context
-              final themeProvider =
-                  Provider.of<ThemeProvider>(context, listen: false);
+            backgroundColor:
+                provider.isClick ? Color(0Xff181f25) : Color(0XFFFAF9F6),
+            actions: [
+              Icon(
+                provider.isClick ? Icons.dark_mode : Icons.light_mode,
+                size: 30,
+                color: provider.isClick ? Colors.white : Colors.black,
+              ),
+              const SizedBox(width: 8),
 
-              // Call the toggleTheme method to change the theme
-              themeProvider.toggleTheme();
-            },
-            icon: Icon(
-              // Use the isClick to determine the icon
-              provider.isClick ? Icons.light_mode : Icons.dark_mode,
-              size: 30,
-            ),
-            color: provider.isClick ? Colors.white : Colors.black,
-          )
-        ]
+              Transform.scale(
+                scale: 0.85,
+                child: Switch(
+                  value: provider.isClick,
+                  onChanged: (bool value) {
+                    provider
+                        .toggleTheme(); // Toggle the theme when the switch is toggled
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              )
+
+              // IconButton(
+              //   onPressed: () {
+              //     // Get the ThemeProvider instance from the context
+              //     final themeProvider =
+              //         Provider.of<ThemeProvider>(context, listen: false);
+
+              //     // Call the toggleTheme method to change the theme
+              //     themeProvider.toggleTheme();
+              //   },
+              //   icon: Icon(
+              //     // Use the isClick to determine the icon
+              //     provider.isClick ? Icons.light_mode : Icons.dark_mode,
+              //     size: 30,
+              //   ),
+              //   color: provider.isClick ? Colors.white : Colors.black,
+              // )
+            ]
 
             // title: const Text("appbar"),
             ),
@@ -47,17 +70,23 @@ class Calculator extends StatelessWidget {
                   // textDirection: TextDirection.rtl,
                   children: [
                     AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       style: TextStyle(
-                            fontSize: calculator.equalPressed
-                                ? 25
-                                : calculator.getLength
-                                    ? 27
-                                    : 35,
-                            color: Appcolors.acColor,
-                            fontWeight: calculator.equalPressed
-                                ? FontWeight.normal
-                                : FontWeight.bold),
+                          fontSize: calculator.equalPressed
+                              ? 25
+                              : calculator.getLength
+                                  ? 27
+                                  : 35,
+                          color: calculator.equalPressed
+                              ? provider.isClick
+                                  ? Colors.white60
+                                  : Appcolors.acColor
+                              : provider.isClick
+                                  ? Colors.white
+                                  : Color(0xff3d3d3f),
+                          fontWeight: calculator.equalPressed
+                              ? FontWeight.normal
+                              : FontWeight.bold),
                       child: Text(
                         calculator.input.isEmpty ? "0" : calculator.input,
                         // style: TextStyle(
@@ -78,14 +107,20 @@ class Calculator extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     AnimatedDefaultTextStyle(
-                    duration: const Duration(milliseconds: 500),
-
+                      duration: const Duration(milliseconds: 500),
                       style: TextStyle(
                           fontSize: calculator.equalPressed ? 35 : 25,
-                          color: Appcolors.acColor,
+                          color: calculator.equalPressed
+                              ? provider.isClick
+                                  ? Colors.white
+                                  : Color(0xff3d3d3f)
+                              : provider.isClick
+                                  ? Colors.white60
+                                  : Appcolors.acColor,
                           fontWeight: calculator.equalPressed
                               ? FontWeight.bold
-                              : FontWeight.normal),                      child: Text(
+                              : FontWeight.normal),
+                      child: Text(
                         calculator.output,
                         // style: TextStyle(
                         //     fontSize: calculator.equalPressed ? 35 : 25,
@@ -131,7 +166,9 @@ class Calculator extends StatelessWidget {
                           calculator.setValue("AC");
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: provider.isClick
+                                ? Color(0xff334a5a)
+                                : Colors.white,
                             // fixedSize: const Size(70, 62),
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
@@ -153,7 +190,9 @@ class Calculator extends StatelessWidget {
                           calculator.setValue("<");
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
+                            backgroundColor: provider.isClick
+                                ? Color(0xff334a5a)
+                                : Colors.white,
                             // fixedSize: const Size(70, 62),
                             shape: const RoundedRectangleBorder(
                                 borderRadius:
@@ -170,14 +209,18 @@ class Calculator extends StatelessWidget {
                         onPressed: () {
                           // print(text);
                         },
-                        bgColor: Appcolors.opButtonColor,
+                        bgColor: provider.isClick
+                            ? Appcolors.darkmodeColor
+                            : Appcolors.opButtonColor,
                         height: 62,
                         width: 70),
                     customButton(
                         text: "*",
                         fgColor: Appcolors.textColor,
                         onPressed: () {},
-                        bgColor: Appcolors.opButtonColor,
+                        bgColor: provider.isClick
+                            ? Appcolors.darkmodeColor
+                            : Appcolors.opButtonColor,
                         height: 62,
                         width: 70),
                   ],
@@ -192,28 +235,36 @@ class Calculator extends StatelessWidget {
                         text: "7",
                         fgColor: Appcolors.textColor,
                         onPressed: () {},
-                        bgColor: Appcolors.whiteColor,
+                        bgColor: provider.isClick
+                            ? Color(0xff303136)
+                            : Appcolors.whiteColor,
                         height: 62,
                         width: 70),
                     customButton(
                         text: "8",
                         fgColor: Appcolors.textColor,
                         onPressed: () {},
-                        bgColor: Appcolors.whiteColor,
+                        bgColor: provider.isClick
+                            ? Color(0xff303136)
+                            : Appcolors.whiteColor,
                         height: 62,
                         width: 70),
                     customButton(
                         text: "9",
                         fgColor: Appcolors.textColor,
                         onPressed: () {},
-                        bgColor: Appcolors.whiteColor,
+                        bgColor: provider.isClick
+                            ? Color(0xff303136)
+                            : Appcolors.whiteColor,
                         height: 62,
                         width: 70),
                     customButton(
                         text: "-",
                         fgColor: Appcolors.textColor,
                         onPressed: () {},
-                        bgColor: Appcolors.opButtonColor,
+                        bgColor: provider.isClick
+                            ? Appcolors.darkmodeColor
+                            : Appcolors.opButtonColor,
                         height: 62,
                         width: 70),
                   ],
@@ -234,7 +285,9 @@ class Calculator extends StatelessWidget {
                                 text: "4",
                                 fgColor: Appcolors.textColor,
                                 onPressed: () {},
-                                bgColor: Appcolors.whiteColor,
+                                bgColor: provider.isClick
+                                    ? Color(0xff303136)
+                                    : Appcolors.whiteColor,
                                 height: 62,
                                 width: 70,
                               ),
@@ -242,14 +295,18 @@ class Calculator extends StatelessWidget {
                                   text: "5",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 62,
                                   width: 70),
                               customButton(
                                   text: "6",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 62,
                                   width: 70),
                             ],
@@ -265,7 +322,9 @@ class Calculator extends StatelessWidget {
                                 text: "1",
                                 fgColor: Appcolors.textColor,
                                 onPressed: () {},
-                                bgColor: Appcolors.whiteColor,
+                                bgColor: provider.isClick
+                                    ? Color(0xff303136)
+                                    : Appcolors.whiteColor,
                                 height: 62,
                                 width: 70,
                               ),
@@ -273,14 +332,18 @@ class Calculator extends StatelessWidget {
                                   text: "2",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 62,
                                   width: 70),
                               customButton(
                                   text: "3",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 62,
                                   width: 70),
                             ],
@@ -295,14 +358,18 @@ class Calculator extends StatelessWidget {
                                   text: "0",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 65,
                                   width: 150),
                               customButton(
                                   text: ".",
                                   fgColor: Appcolors.textColor,
                                   onPressed: () {},
-                                  bgColor: Appcolors.whiteColor,
+                                  bgColor: provider.isClick
+                                      ? Color(0xff303136)
+                                      : Appcolors.whiteColor,
                                   height: 65,
                                   width: 70),
                             ],
@@ -319,7 +386,9 @@ class Calculator extends StatelessWidget {
                             text: "+",
                             fgColor: Appcolors.textColor,
                             onPressed: () {},
-                            bgColor: Appcolors.opButtonColor,
+                            bgColor: provider.isClick
+                                ? Appcolors.darkmodeColor
+                                : Appcolors.opButtonColor,
                             height: 110,
                             width: 70),
                         const SizedBox(
@@ -329,7 +398,9 @@ class Calculator extends StatelessWidget {
                             text: "=",
                             fgColor: Appcolors.textColor,
                             onPressed: () {},
-                            bgColor: Appcolors.opButtonColor,
+                            bgColor: provider.isClick
+                                ? Appcolors.darkmodeColor
+                                : Appcolors.opButtonColor,
                             height: 110,
                             width: 70),
                       ],
@@ -354,6 +425,7 @@ class scientificButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final calculator = Provider.of<CalculateProvider>(context);
+    final provider = Provider.of<ThemeProvider>(context);
 
     return SizedBox(
       width: 70,
@@ -362,7 +434,9 @@ class scientificButton extends StatelessWidget {
         onPressed: () {
           calculator.setValue(text);
         },
-        style: ElevatedButton.styleFrom(backgroundColor: Appcolors.whiteColor),
+        style: ElevatedButton.styleFrom(
+            backgroundColor:
+                provider.isClick ? Color(0xff303136) : Appcolors.whiteColor),
         child: Text(
           text,
           style: TextStyle(

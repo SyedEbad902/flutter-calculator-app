@@ -27,13 +27,15 @@ class CalculateProvider extends ChangeNotifier {
   calculateResult() {
     try {
       var newoutput = input.interpret().toString();
+      output = newoutput;
+      print(newoutput);
       if (newoutput.endsWith(".0")) {
-        output = newoutput.substring(0, newoutput.length - 2);
+        output = "=${newoutput.substring(0, newoutput.length - 2)}";
       } else {
         double doubleValue = double.parse(output);
-        String formattedValue = doubleValue.toStringAsFixed(5);
-
-        output = formattedValue;
+        String formattedValue = doubleValue.toStringAsFixed(4);
+        updateOutput("=${formattedValue}");
+        // output = "=${formattedValue}";
       }
     } catch (e) {
       output = "";
@@ -94,7 +96,7 @@ class CalculateProvider extends ChangeNotifier {
         equalPressed = true;
       } else {
         double doubleValue = double.parse(output);
-        String formattedValue = doubleValue.toStringAsFixed(5);
+        String formattedValue = doubleValue.toStringAsFixed(2);
 
         updateOutput(formattedValue);
         equalPressed = true;
